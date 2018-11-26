@@ -33,6 +33,7 @@ import json
 import re
 import codecs
 import socket
+import tensorflow as tf
 
 args_list = ["keywords", "keywords_from_file", "prefix_keywords", "suffix_keywords",
              "limit", "format", "color", "color_type", "usage_rights", "size",
@@ -294,7 +295,7 @@ class googleimagesdownload:
             image_name = image_name + ".jpg"
 
         try:
-            output_file = open(file_name, 'wb')
+            output_file = tf.gfile.Open(file_name, 'wb')
             output_file.write(data)
             output_file.close()
         except IOError as e:
@@ -518,7 +519,7 @@ class googleimagesdownload:
                 path = main_directory + "/" + dir_name + " - thumbnail" + "/" + return_image_name
 
                 try:
-                    output_file = open(path, 'wb')
+                    output_file = tf.gfile.Open(path, 'wb')
                     output_file.write(data)
                     output_file.close()
                 except OSError as e:
@@ -601,7 +602,7 @@ class googleimagesdownload:
                     path = main_directory + "/" + dir_name + "/" + prefix + str(count) + ". " + image_name
 
                 try:
-                    output_file = open(path, 'wb')
+                    output_file = tf.gfile.Open(path, 'wb')
                     output_file.write(data)
                     output_file.close()
                     absolute_path = os.path.abspath(path)
