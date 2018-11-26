@@ -272,7 +272,7 @@ class googleimagesdownload:
         extensions = (".jpg", ".gif", ".png", ".bmp", ".svg", ".webp", ".ico")
         url = image_url
         try:
-            os.makedirs(main_directory)
+            tf.gfile.MakeDirs(main_directory)
         except OSError as e:
             if e.errno != 17:
                 raise
@@ -432,8 +432,8 @@ class googleimagesdownload:
 
     #measures the file size
     def file_size(self,file_path):
-        if os.path.isfile(file_path):
-            file_info = os.stat(file_path)
+        if not tf.gfile.IsDirectory(file_path):
+            file_info = tf.gfile.stat(file_path)
             size = file_info.st_size
             for x in ['bytes', 'KB', 'MB', 'GB', 'TB']:
                 if size < 1024.0:
@@ -468,26 +468,26 @@ class googleimagesdownload:
         dir_name_thumbnail = dir_name + " - thumbnail"
         # make a search keyword  directory
         try:
-            if not os.path.exists(main_directory):
-                os.makedirs(main_directory)
+            if not tf.gfile.Exists(main_directory):
+                tf.gfile.MakeDirs(main_directory)
                 time.sleep(0.2)
                 path = str(dir_name)
                 sub_directory = os.path.join(main_directory, path)
-                if not os.path.exists(sub_directory):
-                    os.makedirs(sub_directory)
+                if not tf.gfile.Exists(sub_directory):
+                    tf.gfile.MakeDirs(sub_directory)
                 if thumbnail:
                     sub_directory_thumbnail = os.path.join(main_directory, dir_name_thumbnail)
-                    if not os.path.exists(sub_directory_thumbnail):
-                        os.makedirs(sub_directory_thumbnail)
+                    if not tf.gfile.Exists(sub_directory_thumbnail):
+                        tf.gfile.MakeDirs(sub_directory_thumbnail)
             else:
                 path = str(dir_name)
                 sub_directory = os.path.join(main_directory, path)
-                if not os.path.exists(sub_directory):
-                    os.makedirs(sub_directory)
+                if not tf.gfile.Exists(sub_directory):
+                    tf.gfile.MakeDirs(sub_directory)
                 if thumbnail:
                     sub_directory_thumbnail = os.path.join(main_directory, dir_name_thumbnail)
-                    if not os.path.exists(sub_directory_thumbnail):
-                        os.makedirs(sub_directory_thumbnail)
+                    if not tf.gfile.Exists(sub_directory_thumbnail):
+                        tf.gfile.MakeDirs(sub_directory_thumbnail)
         except OSError as e:
             if e.errno != 17:
                 raise
