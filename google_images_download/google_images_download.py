@@ -433,7 +433,7 @@ class googleimagesdownload:
     #measures the file size
     def file_size(self,file_path):
         if not tf.gfile.IsDirectory(file_path):
-            file_info = tf.gfile.stat(file_path)
+            file_info = tf.gfile.Stat(file_path)
             size = file_info.st_size
             for x in ['bytes', 'KB', 'MB', 'GB', 'TB']:
                 if size < 1024.0:
