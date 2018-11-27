@@ -703,48 +703,57 @@ class googleimagesdownload:
         errorCount = 0
         i = 0
         count = 1
-        while count < limit+1:
-            object, end_content = self._get_next_item(page)
-            if object == "no_links":
-                break
-            elif object == "":
-                page = page[end_content:]
-            elif arguments['offset'] and count < int(arguments['offset']):
-                    count += 1
+
+        with open('image-urls.txt', 'a+') as txt:
+            while count < limit+1:
+                object, end_content = self._get_next_item(page)
+                if object == "no_links":
+                    break
+                elif object == "":
                     page = page[end_content:]
-            else:
-                #format the item for readability
-                object = self.format_object(object)
-                if arguments['metadata']:
-                    print("\nImage Metadata: " + str(object))
+                elif arguments['offset'] and count < int(arguments['offset']):
+                        count += 1
+                        page = page[end_content:]
+                else:
+                    #format the item for readability
+                    object = self.format_object(object)
+                    if arguments['metadata']:
+                        print("\nImage Metadata: " + str(object))
 
-                #download the images
-                download_status,download_message,return_image_name,absolute_path = self.download_image(object['image_link'],object['image_format'],main_directory,dir_name,count,arguments['print_urls'],arguments['socket_timeout'],arguments['prefix'],arguments['print_size'],arguments['no_numbering'],arguments['no_download'])
-                print(download_message)
-                if download_status == "success":
-
-                    # download image_thumbnails
-                    if arguments['thumbnail']:
-                        download_status, download_message_thumbnail = self.download_image_thumbnail(object['image_thumbnail_url'],main_directory,dir_name,return_image_name,arguments['print_urls'],arguments['socket_timeout'],arguments['print_size'],arguments['no_download'])
-                        print(download_message_thumbnail)
+                    txt.write(object['image_link'] + '\n')
+                    print(object['image_link'])
 
                     count += 1
-                    object['image_filename'] = return_image_name
-                    items.append(object)  # Append all the links in the list named 'Links'
-                    abs_path.append(absolute_path)
-                else:
-                    errorCount += 1
 
-                #delay param
-                if arguments['delay']:
-                    time.sleep(int(arguments['delay']))
+                    # #download the images
+                    # download_status,download_message,return_image_name,absolute_path = self.download_image(object['image_link'],object['image_format'],main_directory,dir_name,count,arguments['print_urls'],arguments['socket_timeout'],arguments['prefix'],arguments['print_size'],arguments['no_numbering'],arguments['no_download'])
+                    # print(download_message)
+                    # if download_status == "success":
+                    #
+                    #     # download image_thumbnails
+                    #     if arguments['thumbnail']:
+                    #         download_status, download_message_thumbnail = self.download_image_thumbnail(object['image_thumbnail_url'],main_directory,dir_name,return_image_name,arguments['print_urls'],arguments['socket_timeout'],arguments['print_size'],arguments['no_download'])
+                    #         print(download_message_thumbnail)
+                    #
+                    #     count += 1
+                    #     object['image_filename'] = return_image_name
+                    #     items.append(object)  # Append all the links in the list named 'Links'
+                    #     abs_path.append(absolute_path)
+                    # else:
+                    #     errorCount += 1
 
-                page = page[end_content:]
-            i += 1
+                    #delay param
+                    if arguments['delay']:
+                        time.sleep(int(arguments['delay']))
+
+                    page = page[end_content:]
+                i += 1
         if count < limit:
             print("\n\nUnfortunately all " + str(
                 limit) + " could not be downloaded because some images were not downloadable. " + str(
                 count-1) + " is all we got for this search filter!")
+
+
         return items,errorCount,abs_path
 
 
