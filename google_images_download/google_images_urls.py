@@ -255,14 +255,14 @@ class googleimagesdownload:
     #Format the object in readable format
     def format_object(self,object):
         formatted_object = {}
-        formatted_object['image_format'] = object['ity']
-        formatted_object['image_height'] = object['oh']
-        formatted_object['image_width'] = object['ow']
+        # formatted_object['image_format'] = object['ity']
+        # formatted_object['image_height'] = object['oh']
+        # formatted_object['image_width'] = object['ow']
         formatted_object['image_link'] = object['ou']
-        formatted_object['image_description'] = object['pt']
-        formatted_object['image_host'] = object['rh']
-        formatted_object['image_source'] = object['ru']
-        formatted_object['image_thumbnail_url'] = object['tu']
+        # formatted_object['image_description'] = object['pt']
+        # formatted_object['image_host'] = object['rh']
+        # formatted_object['image_source'] = object['ru']
+        # formatted_object['image_thumbnail_url'] = object['tu']
         return formatted_object
 
 
@@ -716,7 +716,12 @@ class googleimagesdownload:
                         page = page[end_content:]
                 else:
                     #format the item for readability
-                    object = self.format_object(object)
+                    try:
+                        object = self.format_object(object)
+                    except Exception as e:
+                        print(e.message, e.args)
+                        continue
+                        
                     if arguments['metadata']:
                         print("\nImage Metadata: " + str(object))
 
