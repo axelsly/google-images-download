@@ -602,6 +602,7 @@ class googleimagesdownload:
                     path = main_directory + "/" + dir_name + "/" + prefix + str(count) + ". " + image_name
 
                 try:
+                    print(path)
                     output_file = tf.gfile.Open(path, 'wb')
                     output_file.write(data)
                     output_file.close()
