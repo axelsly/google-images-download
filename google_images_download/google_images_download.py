@@ -599,7 +599,7 @@ class googleimagesdownload:
                 if no_numbering:
                     path = os.path.join(main_directory, dir_name, prefix + image_name)
                 else:
-                    path = os.path.join(main_directory, dir_name, prefix + str(count) + "-" + image_name
+                    path = os.path.join(main_directory, dir_name, prefix + str(count) + "-" + image_name)
 
                 try:
                     print(path)
