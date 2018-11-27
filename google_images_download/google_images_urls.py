@@ -719,9 +719,8 @@ class googleimagesdownload:
                     try:
                         object = self.format_object(object)
                     except Exception as e:
-                        print(e.message, e.args)
                         continue
-                        
+
                     if arguments['metadata']:
                         print("\nImage Metadata: " + str(object))
 
