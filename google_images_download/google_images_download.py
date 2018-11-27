@@ -592,14 +592,14 @@ class googleimagesdownload:
 
                 # prefix name in image
                 if prefix:
-                    prefix = prefix + " "
+                    prefix = prefix + "-"
                 else:
                     prefix = ''
 
                 if no_numbering:
-                    path = main_directory + "/" + dir_name + "/" + prefix + image_name
+                    path = os.path.join(main_directory, dir_name, prefix + image_name)
                 else:
-                    path = main_directory + "/" + dir_name + "/" + prefix + str(count) + ". " + image_name
+                    path = os.path.join(main_directory, dir_name, prefix + str(count) + "-" + image_name
 
                 try:
                     print(path)
