@@ -718,37 +718,38 @@ class googleimagesdownload:
                     #format the item for readability
                     try:
                         object = self.format_object(object)
+                        if arguments['metadata']:
+                            print("\nImage Metadata: " + str(object))
+
+                        txt.write(object['image_link'] + '\n')
+                        print(object['image_link'])
+
+                        count += 1
+
+                        # #download the images
+                        # download_status,download_message,return_image_name,absolute_path = self.download_image(object['image_link'],object['image_format'],main_directory,dir_name,count,arguments['print_urls'],arguments['socket_timeout'],arguments['prefix'],arguments['print_size'],arguments['no_numbering'],arguments['no_download'])
+                        # print(download_message)
+                        # if download_status == "success":
+                        #
+                        #     # download image_thumbnails
+                        #     if arguments['thumbnail']:
+                        #         download_status, download_message_thumbnail = self.download_image_thumbnail(object['image_thumbnail_url'],main_directory,dir_name,return_image_name,arguments['print_urls'],arguments['socket_timeout'],arguments['print_size'],arguments['no_download'])
+                        #         print(download_message_thumbnail)
+                        #
+                        #     count += 1
+                        #     object['image_filename'] = return_image_name
+                        #     items.append(object)  # Append all the links in the list named 'Links'
+                        #     abs_path.append(absolute_path)
+                        # else:
+                        #     errorCount += 1
+
+                        #delay param
+                        if arguments['delay']:
+                            time.sleep(int(arguments['delay']))
+
                     except Exception as e:
-                        continue
-
-                    if arguments['metadata']:
-                        print("\nImage Metadata: " + str(object))
-
-                    txt.write(object['image_link'] + '\n')
-                    print(object['image_link'])
-
-                    count += 1
-
-                    # #download the images
-                    # download_status,download_message,return_image_name,absolute_path = self.download_image(object['image_link'],object['image_format'],main_directory,dir_name,count,arguments['print_urls'],arguments['socket_timeout'],arguments['prefix'],arguments['print_size'],arguments['no_numbering'],arguments['no_download'])
-                    # print(download_message)
-                    # if download_status == "success":
-                    #
-                    #     # download image_thumbnails
-                    #     if arguments['thumbnail']:
-                    #         download_status, download_message_thumbnail = self.download_image_thumbnail(object['image_thumbnail_url'],main_directory,dir_name,return_image_name,arguments['print_urls'],arguments['socket_timeout'],arguments['print_size'],arguments['no_download'])
-                    #         print(download_message_thumbnail)
-                    #
-                    #     count += 1
-                    #     object['image_filename'] = return_image_name
-                    #     items.append(object)  # Append all the links in the list named 'Links'
-                    #     abs_path.append(absolute_path)
-                    # else:
-                    #     errorCount += 1
-
-                    #delay param
-                    if arguments['delay']:
-                        time.sleep(int(arguments['delay']))
+                        errorCount += 1
+                        pass
 
                     page = page[end_content:]
                 i += 1
