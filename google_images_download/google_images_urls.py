@@ -2,6 +2,14 @@
 # In[ ]:
 #  coding: utf-8
 
+"""
+python google_images_urls.py -cf ../searches/agent.json
+
+ls -1 ../searches/ | xargs -n 1 -P 1 -i python google_images_urls.py -cf ../searches/{} --chromedriver /usr/bin/chromedriver
+
+ls -1 ../searches/ | xargs -n 1 -P 32 -i echo ../searches/{}
+"""
+
 ###### Searching and Downloading Google Images to the local disk ######
 
 # Import Libraries
