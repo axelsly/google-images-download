@@ -117,7 +117,7 @@ def user_input():
         arguments = vars(args)
         records = []
         records.append(arguments)
-    return records
+    return records, config_file_check[0].config_file
 
 
 class googleimagesdownload:
@@ -697,14 +697,15 @@ class googleimagesdownload:
 
 
     # Getting all links with the help of '_images_get_next_image'
-    def _get_all_items(self,page,main_directory,dir_name,limit,arguments):
+    def _get_all_items(self,page,main_directory,dir_name,limit,arguments,config_file):
         items = []
         abs_path = []
         errorCount = 0
         i = 0
         count = 1
 
-        with open('image-urls.txt', 'a+') as txt:
+        url_filepath = "{0}.txt".format(os.path.basename(config_file).split('.')[0])
+        with open(url_filepath, 'a+') as txt:
             while count < limit+1:
                 object, end_content = self._get_next_item(page)
                 if object == "no_links":
@@ -763,7 +764,7 @@ class googleimagesdownload:
 
 
     # Bulk Download
-    def download(self,arguments):
+    def download(self,arguments,config_file):
 
         #for input coming from other python files
         if __name__ != "__main__":
@@ -872,7 +873,7 @@ class googleimagesdownload:
                         print("Starting to Print Image URLS")
                     else:
                         print("Starting Download...")
-                    items,errorCount,abs_path = self._get_all_items(raw_html,main_directory,dir_name,limit,arguments)    #get all image items and download images
+                    items,errorCount,abs_path = self._get_all_items(raw_html,main_directory,dir_name,limit,arguments, config_file)    #get all image items and download images
                     paths[pky + search_keyword[i] + sky] = abs_path
 
                     #dumps into a json file
@@ -898,7 +899,7 @@ class googleimagesdownload:
                             else:
                                 new_raw_html = self.download_extended_page(value,arguments['chromedriver'])
                             self.create_directories(main_directory, final_search_term,arguments['thumbnail'])
-                            self._get_all_items(new_raw_html, main_directory, search_term + " - " + key, limit,arguments)
+                            self._get_all_items(new_raw_html, main_directory, search_term + " - " + key, limit,arguments, config_file)
 
                     i += 1
                     print("\nErrors: " + str(errorCount) + "\n")
@@ -908,7 +909,7 @@ class googleimagesdownload:
 
 #------------- Main Program -------------#
 def main():
-    records = user_input()
+    records, config_file = user_input()
     for arguments in records:
 
         if arguments['single_image']:  # Download Single Image using a URL
@@ -917,7 +918,7 @@ def main():
         else:  # or download multiple images based on keywords/keyphrase search
             t0 = time.time()  # start the timer
             response = googleimagesdownload()
-            paths = response.download(arguments)  #wrapping response in a variable just for consistency
+            paths = response.download(arguments, config_file)  #wrapping response in a variable just for consistency
 
             print("\nEverything downloaded!")
             t1 = time.time()  # stop the timer
