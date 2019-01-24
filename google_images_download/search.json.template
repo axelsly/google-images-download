@@ -1,0 +1,18 @@
+{
+    "Records": [
+        {
+            "keywords": "{{ keywords }}",
+            "limit": 1000000,
+            "size": ">400*300",
+            "type": "{{ type }}",
+            "output_directory": "UNUSED",
+            "image_directory": "UNUSED",
+            "related_images": true,
+            "print_urls": true,
+            "print_paths": true,
+            "extract_metadata": true,
+            "chromedriver": "/usr/local/bin/chromedriver",
+            "no_numbering": true
+        }
+    ]
+}
