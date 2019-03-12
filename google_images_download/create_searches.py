@@ -23,6 +23,8 @@ def generate_arg_parser():
 def create_search_json(output_dir):
     # Query user for image types for this dataset
     image_search_type = input("Image search type:\n")
+    search_output_directory = input("Search output directory:\n")
+    chromedriver = input("Chromedriver path:\n")
 
     jinja_env = Environment(loader=FileSystemLoader(searchpath="./"))
     template = jinja_env.get_template('search.json.template')
@@ -38,7 +40,7 @@ def create_search_json(output_dir):
             break
 
         # Fill out template
-        formatted_json_string = template.render(keywords=image_search_keywords, type=image_search_type)
+        formatted_json_string = template.render(keywords=image_search_keywords, type=image_search_type, output_directory=search_output_directory, chromedriver=chromedriver)
         output_filename = "{0}.json".format(re.sub('\s+', '-', image_search_keywords))
         output_filepath = os.path.join(output_dir, output_filename)
 

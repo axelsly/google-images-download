@@ -5,13 +5,13 @@
             "limit": 1000000,
             "size": ">400*300",
             "type": "{{ type }}",
-            "output_directory": "UNUSED",
+            "output_directory": "{{ output_directory }}",
             "image_directory": "UNUSED",
             "related_images": true,
             "print_urls": true,
             "print_paths": true,
             "extract_metadata": true,
-            "chromedriver": "/usr/local/bin/chromedriver",
+            "chromedriver": "{{ chromedriver }}",
             "no_numbering": true
         }
     ]
