@@ -712,7 +712,8 @@ class googleimagesdownload:
         i = 0
         count = 1
 
-        url_filepath = "{0}.txt".format(os.path.basename(config_file).split('.')[0])
+        url_filename = "{0}.txt".format(os.path.basename(config_file).split('.')[0])
+        url_filepath = os.path.join(main_directory, url_filename)
         with open(url_filepath, 'a+') as txt:
             while count < limit+1:
                 object, end_content = self._get_next_item(page)
