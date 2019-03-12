@@ -5,7 +5,7 @@
 """
 python google_images_urls.py -cf ../searches/agent.json
 
-ls -1 ../searches/ | xargs -n 1 -P 1 -i python google_images_urls.py -cf ../searches/{} --chromedriver /usr/bin/chromedriver
+ls -1 ../searches/ | xargs -n 1 -P 32 -i python google_images_urls.py -cf ../searches/{} --chromedriver /usr/bin/chromedriver
 
 ls -1 ../searches/ | xargs -n 1 -P 32 -i echo ../searches/{}
 """
@@ -175,7 +175,7 @@ class googleimagesdownload:
         options.add_argument("--headless")
 
         try:
-            browser = webdriver.Chrome(chromedriver, chrome_options=options)
+            browser = webdriver.Chrome("/usr/bin/chromedriver", chrome_options=options)
         except Exception as e:
             print("Looks like we cannot locate the path the 'chromedriver' (use the '--chromedriver' "
                   "argument to specify the path to the executable.) or google chrome browser is not "
