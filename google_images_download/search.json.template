@@ -6,7 +6,7 @@
             "size": ">400*300",
             "type": "{{ type }}",
             "output_directory": "{{ output_directory }}",
-            "image_directory": "UNUSED",
+            "no_directory": true,
             "related_images": true,
             "print_urls": true,
             "print_paths": true,
