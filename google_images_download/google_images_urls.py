@@ -907,7 +907,7 @@ class googleimagesdownload:
                                 new_raw_html = self.download_page(value)  # download page
                             else:
                                 new_raw_html = self.download_extended_page(value,arguments['chromedriver'])
-                            self.create_directories(main_directory, final_search_term,arguments['thumbnail'])
+                            # self.create_directories(main_directory, final_search_term,arguments['thumbnail'])
                             self._get_all_items(new_raw_html, main_directory, dir_name, limit,arguments, config_file)
 
                     i += 1
