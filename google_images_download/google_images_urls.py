@@ -189,25 +189,23 @@ class googleimagesdownload:
         print("Getting you a lot of images. This may take a few moments...")
 
         element = browser.find_element_by_tag_name("body")
-        print (element)
         # Scroll down
         for i in range(30):
             element.send_keys(Keys.PAGE_DOWN)
-            time.sleep(0.6)
+            time.sleep(0.3)
 
         try:
             elem_id = browser.find_element_by_id("smb").click()
-            print (elem_id)
             for i in range(50):
                 element.send_keys(Keys.PAGE_DOWN)
-                time.sleep(0.6)  # bot id protection
+                time.sleep(0.3)  # bot id protection
         except:
             for i in range(10):
                 element.send_keys(Keys.PAGE_DOWN)
-                time.sleep(0.6)  # bot id protection
+                time.sleep(0.3)  # bot id protection
 
         print("Reached end of Page.")
-        time.sleep(0.8)
+        time.sleep(0.5)
 
         source = browser.page_source #page source
         #close the browser
@@ -719,7 +717,6 @@ class googleimagesdownload:
         with open(url_filepath, 'a+') as txt:
             while count < limit+1:
                 object, end_content = self._get_next_item(page)
-                print (object)
                 if object == "no_links":
                     break
                 elif object == "":
@@ -880,8 +877,6 @@ class googleimagesdownload:
                         raw_html = self.download_page(url)  # download page
                     else:
                         raw_html = self.download_extended_page(url,arguments['chromedriver'])
-
-                    print(url)
 
                     if arguments['no_download']:
                         print("Starting to Print Image URLS")
