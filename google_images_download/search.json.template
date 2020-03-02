@@ -4,14 +4,14 @@
             "keywords": "{{ keywords }}",
             "limit": 1000000,
             "size": ">400*300",
-            "type": "{{ type }}",
-            "output_directory": "{{ output_directory }}",
+            "type": "face",
+            "output_directory": "UNUSED",
             "no_directory": true,
             "related_images": true,
             "print_urls": true,
             "print_paths": true,
             "extract_metadata": true,
-            "chromedriver": "{{ chromedriver }}",
+            "chromedriver": "/usr/bin/chromedriver",
             "no_numbering": true
         }
     ]
