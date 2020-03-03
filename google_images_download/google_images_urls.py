@@ -260,19 +260,41 @@ class googleimagesdownload:
         return tabs
 
 
+    # #Format the object in readable format
+    # def format_object(self,object):
+    #     formatted_object = {}
+    #     # formatted_object['image_format'] = object['ity']
+    #     # formatted_object['image_height'] = object['oh']
+    #     # formatted_object['image_width'] = object['ow']
+    #     formatted_object['image_link'] = object['ou']
+    #     # formatted_object['image_description'] = object['pt']
+    #     # formatted_object['image_host'] = object['rh']
+    #     # formatted_object['image_source'] = object['ru']
+    #     # formatted_object['image_thumbnail_url'] = object['tu']
+    #     return formatted_object
+
+
     #Format the object in readable format
     def format_object(self,object):
+        data = object[1]
+        main = data[3]
+        info = data[9]
+        if info is None:
+            info = data[11]
         formatted_object = {}
-        # formatted_object['image_format'] = object['ity']
-        # formatted_object['image_height'] = object['oh']
-        # formatted_object['image_width'] = object['ow']
-        formatted_object['image_link'] = object['ou']
-        # formatted_object['image_description'] = object['pt']
-        # formatted_object['image_host'] = object['rh']
-        # formatted_object['image_source'] = object['ru']
-        # formatted_object['image_thumbnail_url'] = object['tu']
+        try:
+            formatted_object['image_height'] = main[2]
+            formatted_object['image_width'] = main[1]
+            formatted_object['image_link'] = main[0]
+            formatted_object['image_format']=main[0][-1*(len(main[0])-main[0].rfind(".")-1):]
+            formatted_object['image_description'] = info['2003'][3]
+            formatted_object['image_host'] = info['183836587'][0]
+            formatted_object['image_source'] = info['2003'][2]
+            formatted_object['image_thumbnail_url'] = data[2][0]
+        except Exception as e:
+            print(e)
+            return None
         return formatted_object
-
 
     #function to download single image
     def single_image(self,image_url):
@@ -705,29 +727,48 @@ class googleimagesdownload:
 
 
     # Getting all links with the help of '_images_get_next_image'
+    def _get_image_objects(self,s):
+        start_line = s.find("AF_initDataCallback({key: \\'ds:2\\'") - 10
+        start_object = s.find('[', start_line + 1)
+        end_object = s.find('</script>', start_object + 1) - 4
+        object_raw = str(s[start_object:end_object])
+        object_decode = bytes(object_raw, "utf-8").decode("unicode_escape")
+        print(object_decode)
+        image_objects = json.loads(object_decode)[31][0][12][2]
+        image_objects = [x for x in image_objects if x[0]==1]
+        return image_objects
+
+
+    # Getting all links with the help of '_images_get_next_image'
     def _get_all_items(self,page,main_directory,dir_name,limit,arguments,config_file):
         items = []
         abs_path = []
         errorCount = 0
         i = 0
         count = 1
+        image_objects = self._get_image_objects(page)
 
         url_filename = "{0}.txt".format(os.path.basename(config_file).split('.')[0])
         url_filepath = os.path.join(main_directory, url_filename)
         with open(url_filepath, 'a+') as txt:
-            while count < limit+1:
-                object, end_content = self._get_next_item(page)
-                if object == "no_links":
+            # while count < limit+1:
+            #     object, end_content = self._get_next_item(page)
+            #     if object == "no_links":
+            #         break
+            while count < limit+1 and i<len(image_objects):
+                if len(image_objects) == 0:
+                    print("no_links")
                     break
-                elif object == "":
-                    page = page[end_content:]
-                elif arguments['offset'] and count < int(arguments['offset']):
-                        count += 1
-                        page = page[end_content:]
+                # elif object == "":
+                #     page = page[end_content:]
+                # elif arguments['offset'] and count < int(arguments['offset']):
+                #         count += 1
+                #         page = page[end_content:]
                 else:
                     #format the item for readability
                     try:
-                        object = self.format_object(object)
+                        # object = self.format_object(object)
+                        object = self.format_object(image_objects[i])
                         if arguments['metadata']:
                             print("\nImage Metadata: " + str(object))
 
@@ -761,7 +802,7 @@ class googleimagesdownload:
                         errorCount += 1
                         pass
 
-                    page = page[end_content:]
+                    # page = page[end_content:]
                 i += 1
         if count < limit:
             print("\n\nUnfortunately all " + str(
