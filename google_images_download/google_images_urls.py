@@ -728,12 +728,15 @@ class googleimagesdownload:
 
     # Getting all links with the help of '_images_get_next_image'
     def _get_image_objects(self,s):
-        start_line = s.find("AF_initDataCallback({key: \\'ds:2\\'") - 10
+        start_line = s.find("AF_initDataCallback({key: \'ds:2\'") - 10
         start_object = s.find('[', start_line + 1)
         end_object = s.find('</script>', start_object + 1) - 4
         object_raw = str(s[start_object:end_object])
         object_decode = bytes(object_raw, "utf-8").decode("unicode_escape")
-        print(object_decode)
+        object_decode = object_decode.replace("\\", "")
+        object_decode = object_decode.replace("\/", "")
+        # print (object_decode)
+        # print(object_decode)
         image_objects = json.loads(object_decode)[31][0][12][2]
         image_objects = [x for x in image_objects if x[0]==1]
         return image_objects
@@ -918,6 +921,8 @@ class googleimagesdownload:
                         raw_html = self.download_page(url)  # download page
                     else:
                         raw_html = self.download_extended_page(url,arguments['chromedriver'])
+                        raw_html = raw_html.replace('\n', '').replace('\r', '')
+                        raw_html = raw_html.replace(',', ',')
 
                     if arguments['no_download']:
                         print("Starting to Print Image URLS")
@@ -948,6 +953,8 @@ class googleimagesdownload:
                                 new_raw_html = self.download_page(value)  # download page
                             else:
                                 new_raw_html = self.download_extended_page(value,arguments['chromedriver'])
+                                new_raw_html = new_raw_html.replace('\n', '').replace('\r', '')
+                                new_raw_html = new_raw_html.replace(',', ',')
                             # self.create_directories(main_directory, final_search_term,arguments['thumbnail'])
                             self._get_all_items(new_raw_html, main_directory, dir_name, limit,arguments, config_file)
 
